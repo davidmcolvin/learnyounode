@@ -7,10 +7,12 @@ http.get(url, (response) => {
         response.pipe(bl(function(err,data) {
                 if (err) {console.log('error');return; } 
                 const responseString = data.toString();
-                const responseArray = responseString.split(" ");
-                responseArray.forEach(function(res) {
-                    console.log(res.length + '\n');
-                    console.log(res + '\n');
-                });
+               // const responseArray = responseString.split(" ");
+               // responseArray.forEach(function(res) {
+               //     console.log(res.length + '\n');
+               //     console.log(res + '\n');
+console.log(data.toString().length);                
+console.log(data.toString());
+               // });
             }))
         });
