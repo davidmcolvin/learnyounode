@@ -2,16 +2,29 @@
 
 const http = require('http')
 
-const port = process.argv[2]
+//const port = process.argv[2]
 
 
 const server = http.createServer(function(req,res) {
+debugger;
         if (req.method !== "GET") {
             res.statusMessage="Get Only";
             res.status(400).end();
         } 
 
-        const myUrl = new URL(req.url);
+switch (req.url) {
+case '/api/parsetime ':
+route += 'index.html';
+break;
+case '/contact':
+route += 'contact.html';
+break;
+default:
+route += '404.html'
+break;
+}
+
+        const myUrl = new URL(req. req.url);
         
         const myPath = myUrl.pathname;
         const rawSearch = myUrl.search.slice(1);
@@ -35,3 +48,5 @@ const server = http.createServer(function(req,res) {
 
     }
 );
+
+server.listen(8080);
