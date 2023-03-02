@@ -11,15 +11,20 @@ const server = http.createServer(function(req,res) {
             res.statusMessage="Get Only";
             res.status(400).end();
         } 
-
+const myUrl = new URL(req.headers.host + req.url);
 //const myUrl = new URL(req, req.url);
-switch (req.path) {
-case '/api/parsetime ':
- res.writeHead(200, {'Content-Type': 'application/json'});
-res.message('hello').end();
+switch (myUrl.pathname) {
+case port + '/api/parsetime':
+ const body = JSON.stringify({'test':'hello'});
+ res.writeHead(200, {
+                        'Content-Type': 'application/json'
+                    
+                    })
+                    .end(body);
 break;
-case '/api/unixtime':
+case port+'/api/unixtime':
  res.writeHead(200, {'Content-Type': 'application/json'});
+ res.message('hello2').end();
 break;
 default:
  res.writeHead(400).end();
