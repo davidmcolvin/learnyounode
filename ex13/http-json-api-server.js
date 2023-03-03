@@ -1,21 +1,30 @@
 'use strict'
 
 const http = require('http')
-
+const url = require('url');
 const port = process.argv[2]
 
 
 const server = http.createServer(function(req,res) {
 
-        if (req.method !== "GET") {
-            res.statusMessage="Get Only";
-            res.status(400).end();
-        } 
-const myUrl = new URL(req.headers.host + req.url);
-//const myUrl = new URL(req, req.url);
+if (req.method !== "GET") {
+ res.statusMessage="Get Only";
+ res.status(400).end();
+} 
+
+//let myUrl = new URL(req.headers.host + req.url);
+let myUrl = url.parse(req.headers.host + req.url);
+let myData = myUrl.query
+let myDate;
+let body = '';
+
 switch (myUrl.pathname) {
 case port + '/api/parsetime':
- const body = JSON.stringify({'test':'hello'});
+ myDate = new Date(myData.iso);
+ let seconds = myDate.getSeconds();
+ let minutes = myDate.getMinutes();
+ let hours = myDate.getHours();
+ body = JSON.stringify({ hour:hours, minute:minutes, second:seconds });
  res.writeHead(200, {
                         'Content-Type': 'application/json'
                     
@@ -23,31 +32,20 @@ case port + '/api/parsetime':
                     .end(body);
 break;
 case port+'/api/unixtime':
- res.writeHead(200, {'Content-Type': 'application/json'});
- res.message('hello2').end();
+ myDate = new Date(myData.unixtime);
+ let myUnixtime = myDate.getTime();
+ body = JSON.stringify({ unixTime:myUnixtime });
+  res.writeHead(200, {
+                        'Content-Type': 'application/json'
+                    
+                    })
+                    .end(body); 
 break;
 default:
  res.writeHead(400).end();
 break;
 }
-
-        /*
-        const myPath = myUrl.pathname;
-        const rawSearch = myUrl.search.slice(1);
-        const myDate = new Date(rawSearch);
-        const myTime = myDate.toString().substr(11,2);           
-
-        if (myPath === 'api/parsetime') {
-            
-            let myRes = '"hour": ' + myTime.substr(0,2);
-
-        } else if (myPath === 'api/unixtime') {
-            
-
-        } else {
-        }
-           */
-
+        
 }   
 );
 
