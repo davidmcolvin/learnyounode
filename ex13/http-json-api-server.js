@@ -12,15 +12,14 @@ if (req.method !== "GET") {
  res.status(400).end();
 } 
 
-//let myUrl = new URL(req.headers.host + req.url);
-let myUrl = url.parse(req.headers.host + req.url);
+let myUrl = url.parse(req.headers.host + req.url,true);
 let myData = myUrl.query
 let myDate;
 let body = '';
+myDate = new Date(myData.iso);
 
 switch (myUrl.pathname) {
-case port + '/api/parsetime':
- myDate = new Date(myData.iso);
+case '/api/parsetime':
  let seconds = myDate.getSeconds();
  let minutes = myDate.getMinutes();
  let hours = myDate.getHours();
@@ -31,10 +30,9 @@ case port + '/api/parsetime':
                     })
                     .end(body);
 break;
-case port+'/api/unixtime':
- myDate = new Date(myData.unixtime);
+case '/api/unixtime':
  let myUnixtime = myDate.getTime();
- body = JSON.stringify({ unixTime:myUnixtime });
+ body = JSON.stringify({ unixtime:myUnixtime });
   res.writeHead(200, {
                         'Content-Type': 'application/json'
                     
